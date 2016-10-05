@@ -43,5 +43,14 @@ jspm_packages
 # Output of 'npm pack'
 *.tgz
 
-# Intellij dir
+# It's best practice to exclude build artifacts from source control
+dist
+
+# IDE Generated Files
+classes
+.classpath
+.project
 .idea
+*.iml
+*.ipr
+*.iws
