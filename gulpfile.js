@@ -15,6 +15,7 @@ var config = {
     paths: {
         html: './src/**/*.html',
         js: './src/**/*.js',
+        images: './src/images/*',
         css: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
             'node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
@@ -67,6 +68,17 @@ gulp.task('css', function () {
         .pipe(gulp.dest(config.paths.dist + '/css'));
 });
 
+// Migrate images to dist/images dir, and reload browser
+gulp.task('images', function(){
+    gulp.src(config.paths.images)
+        .pipe(gulp.dest(config.paths.dist +'/images'))
+        .pipe(connect.reload());
+
+    // Publish favicon
+    gulp.src('./src/favicon.ico')
+        .pipe(gulp.dest(config.paths.dist));
+});
+
 gulp.task('lint', function () {
     return gulp.src(config.paths.js)
         .pipe(lint())
@@ -80,4 +92,4 @@ gulp.task('watch', function () {
 });
 
 // Configure what gulp does with no args
-gulp.task('default', ['html', 'js', 'css', 'lint', 'open', 'watch']);
+gulp.task('default', ['html', 'js', 'css', 'images', 'lint', 'open', 'watch']);
