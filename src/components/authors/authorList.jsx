@@ -3,6 +3,14 @@
 var React = require('react');
 
 var AuthorList = React.createClass({
+    propTypes: {
+        authors      : React.PropTypes.array.isRequired
+        // author      : React.PropTypes.object.isRequired,
+        // onSave      : React.PropTypes.func.isRequired,
+        // validate    : React.PropTypes.func.isRequired,
+        // errors      : React.PropTypes.object,
+        // hasErrors   : React.PropTypes.func.isRequired
+    },
 
     render: function () {
         var createAuthorRow = function (author) {

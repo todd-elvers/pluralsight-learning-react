@@ -4,7 +4,7 @@ var React = require('react');
 var AuthorApi = require('../../api/authorApi.jsx');
 var AuthorList = require('./authorList.jsx');
 
-var Authors = React.createClass({
+var AuthorPage = React.createClass({
 
     // Initialize the component's internal state
     getInitialState: function () {
@@ -29,4 +29,4 @@ var Authors = React.createClass({
     }
 });
 
-module.exports = Authors;
+module.exports = AuthorPage;
