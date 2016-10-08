@@ -16,9 +16,11 @@ var config = {
         html: './src/**/*.html',
         js: './src/**/*.jsx',
         images: './src/images/*',
+        // Here we can specify individual CSS files, like ones that exist inside plugins, etc.
         css: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
-            'node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
+            'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
+            'node_modules/toastr/build/toastr.css'
         ],
         dist: './dist',
         mainJs: './src/main.jsx'
