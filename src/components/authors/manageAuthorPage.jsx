@@ -16,7 +16,8 @@ var ManageAuthorPage = React.createClass({
 
     getInitialState: function () {
         return {
-            author: {id: '', firstName: '', lastName: ''}
+            author: {id: '', firstName: '', lastName: ''},
+            errors: {}
         };
     },
 
@@ -33,11 +34,42 @@ var ManageAuthorPage = React.createClass({
         });
     },
 
-    saveAuthor: function(event) {
-        event.preventDefault();                       // Prevent the form submission
-        AuthorApi.saveAuthor(this.state.author);     // Hit the fake API and pretend we're saving the author
-        toastr.success('Author saved!');             // Display a toast message to the user
-        this.transitionTo('authors');               // Tell React Router to send us back to the 'authors' page
+    authorFormIsValid: function () {
+        var formIsValid = true;
+        
+        // Clear any previous errors
+        this.state.errors = {};
+        
+        if(this.state.author.firstName.length < 3) {
+            this.state.errors.firstName = 'First name must be a least 3 characters.';
+            formIsValid = false;
+        }
+
+        if(this.state.author.lastName.length < 3) {
+            this.state.errors.lastName = 'Last name must be a least 3 characters.';
+            formIsValid = false;
+        }
+
+        this.setState({ errors: this.state.errors});
+        return formIsValid;
+    },
+
+    saveAuthor: function (event) {
+        event.preventDefault();
+
+
+        if (!this.authorFormIsValid()) {
+            return;
+        }
+
+        // Hit the fake API and pretend we're saving the author
+        AuthorApi.saveAuthor(this.state.author);
+
+        // Display a toast message to the user
+        toastr.success('Author saved!');
+
+        // Tell React Router to send us back to the 'authors' page
+        this.transitionTo('authors');
     },
 
     render: function () {
@@ -46,6 +78,7 @@ var ManageAuthorPage = React.createClass({
                 author={this.state.author}
                 onChange={this.setAuthorState}
                 onSave={this.saveAuthor}
+                errors={this.state.errors}
             />
         );
     }

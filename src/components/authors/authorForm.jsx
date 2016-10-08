@@ -17,14 +17,18 @@ var AuthorForm = React.createClass({
                 <Input name="firstName"
                        label="First Name"
                        value={this.props.author.firstName}
-                       onChange={this.props.onChange} />
+                       onChange={this.props.onChange}
+                       error={this.props.errors.firstName} />
 
                 <Input name="lastName"
                        label="Last Name"
                        value={this.props.author.lastName}
-                       onChange={this.props.onChange} />
+                       onChange={this.props.onChange}
+                       error={this.props.errors.lastName} />
 
-                <button className="btn btn-default" type="submit" onClick={this.props.onSave}>
+                <button className="btn btn-default"
+                        type="submit"
+                        onClick={this.props.onSave}>
                     Save
                 </button>
             </form>
