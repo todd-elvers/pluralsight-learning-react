@@ -44,7 +44,8 @@ jspm_packages
 *.tgz
 
 # It's best practice to exclude build artifacts from source control
-dist
+dist/
+out/
 
 # IDE Generated Files
 classes
