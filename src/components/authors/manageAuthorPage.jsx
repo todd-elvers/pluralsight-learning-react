@@ -14,10 +14,20 @@ var ManageAuthorPage = React.createClass({
     ],
 
 
+    statics: {
+        // Prompt user when leaving page if changes have been made that aren't saved
+        willTransitionFrom: function(transition, component) {
+            if(component.state.dirty && !confirm('Leave without saving?')) {
+                transition.abort();
+            }
+        }
+    },
+
     getInitialState: function () {
         return {
             author: {id: '', firstName: '', lastName: ''},
-            errors: {}
+            errors: {},
+            dirty : false
         };
     },
 
@@ -25,9 +35,9 @@ var ManageAuthorPage = React.createClass({
     // name input fields in the AuthorForm component to modify
     // the author object that exists in this component's state
     setAuthorState: function (event) {
+        this.setState({dirty: true});
         var field = event.target.name;
-        var value = event.target.value;
-        this.state.author[field] = value;
+        this.state.author[field] = event.target.value;
 
         return this.setState({
             author: this.state.author
@@ -54,21 +64,27 @@ var ManageAuthorPage = React.createClass({
         return formIsValid;
     },
 
+    // componentWillMount was chosen over componentDidMount
+    // b/c calls to .setState() won't cause a re-render
+    componentWillMount: function() {
+        var authorId = this.props.params.id; //From the path '/author:id'
+
+        if(authorId) {
+            this.setState({author: AuthorApi.getAuthorById(authorId)})
+        }
+    },
+
     saveAuthor: function (event) {
         event.preventDefault();
-
 
         if (!this.authorFormIsValid()) {
             return;
         }
 
-        // Hit the fake API and pretend we're saving the author
+        // Pretend to save Author, set state to clean, toast user & navigate back to 'authors' page
         AuthorApi.saveAuthor(this.state.author);
-
-        // Display a toast message to the user
+        this.setState({dirty: false});
         toastr.success('Author saved!');
-
-        // Tell React Router to send us back to the 'authors' page
         this.transitionTo('authors');
     },
 
