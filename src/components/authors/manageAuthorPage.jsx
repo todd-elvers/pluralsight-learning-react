@@ -3,7 +3,8 @@
 var React = require('react');
 var Router = require('react-router');
 var AuthorForm = require('./authorForm.jsx');
-var AuthorApi = require('../../api/authorApi.jsx');
+var AuthorActions = require('../../actions/authorActions.jsx');
+var AuthorStore = require('../../stores/authorStore.jsx');
 var toastr = require('toastr');
 
 // Page responsible for managing an author.  i.e. the CRUD page for authors.
@@ -29,6 +30,16 @@ var ManageAuthorPage = React.createClass({
             errors: {},
             dirty : false
         };
+    },
+
+
+    // componentWillMount was chosen over componentDidMount
+    // b/c calls to .setState() won't cause a re-render
+    componentWillMount: function() {
+        var authorId = this.props.params.id; //From the path '/author:id'
+        if(authorId) {
+            this.setState({author: AuthorStore.getAuthorById(authorId)})
+        }
     },
 
     // This function allows the key-presses in the first & last
@@ -64,16 +75,6 @@ var ManageAuthorPage = React.createClass({
         return formIsValid;
     },
 
-    // componentWillMount was chosen over componentDidMount
-    // b/c calls to .setState() won't cause a re-render
-    componentWillMount: function() {
-        var authorId = this.props.params.id; //From the path '/author:id'
-
-        if(authorId) {
-            this.setState({author: AuthorApi.getAuthorById(authorId)})
-        }
-    },
-
     saveAuthor: function (event) {
         event.preventDefault();
 
@@ -81,8 +82,7 @@ var ManageAuthorPage = React.createClass({
             return;
         }
 
-        // Pretend to save Author, set state to clean, toast user & navigate back to 'authors' page
-        AuthorApi.saveAuthor(this.state.author);
+        AuthorActions.createAuthor(this.state.author);
         this.setState({dirty: false});
         toastr.success('Author saved!');
         this.transitionTo('authors');

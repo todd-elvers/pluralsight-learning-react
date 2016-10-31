@@ -37,7 +37,7 @@ var AuthorApi = {
             author.id = _generateId(author);
             authors.push(author);
         }
-
+        console.log(author);
         return _clone(author);
     },
 
