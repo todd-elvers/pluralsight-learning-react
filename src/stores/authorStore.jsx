@@ -47,13 +47,29 @@ Dispatcher.register(function (action) {
     // Since the dispatcher is updated on *every* action, we must check the actionType to see
     // if we want to do anything with it.
     switch (action.actionType) {
+        case ActionTypes.INITIALIZE:
+            _authors = action.initialData.authors;
+            AuthorStore.emitChange();
+            break;
+
         // If we receive a 'create author' event, update our private list of authors
         // and tell the AuthorStore so it can notify all components that have registered
         // with it
         case ActionTypes.CREATE_AUTHOR:
-            _authors.push(action.data);
+            _authors.push(action.author);
             AuthorStore.emitChange();
             break;
+
+        case ActionTypes.UPDATE_AUTHOR:
+            var existingAuthor = _.find(_authors, {id: action.author.id});
+            var existingAuthorIndex = _.indexOf(_authors, existingAuthor);
+            // Replace existing author in _authors with author received in the action
+            _authors.splice(existingAuthorIndex, 1 , action.author);
+            AuthorStore.emitChange();
+            break;
+
+        default:
+            // no op
 
     }
 });

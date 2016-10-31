@@ -8,11 +8,19 @@ var AuthorActions = {
     createAuthor: function (author) {
         var newAuthor = AuthorApi.saveAuthor(author);
 
-        // Dispatch a message to all stores indicating that
-        // an author has been created.
+        // Dispatch a message to all stores indicating that an author has been created.
         Dispatcher.dispatch({
             actionType: ActionTypes.CREATE_AUTHOR,
-            data: newAuthor
+            author: newAuthor
+        });
+    },
+
+    updateAuthor: function (author) {
+        var updatedAuthor = AuthorApi.saveAuthor(author);
+
+        Dispatcher.dispatch({
+            actionType: ActionTypes.UPDATE_AUTHOR,
+            author: updatedAuthor
         });
     }
 };
