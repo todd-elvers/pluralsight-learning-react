@@ -21,7 +21,8 @@
     "no-unused-vars": 0,
     "no-underscore_dangle": 0,
     "no-alert": 0,
-    "no-console": 0
+    "no-console": 0,
+    "no-debugger": 0
   },
   "globals": {
     "jQuery": true,

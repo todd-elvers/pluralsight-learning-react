@@ -30,7 +30,7 @@ var AuthorStore = assign({}, EventEmitter.prototype, {
         this.emit(CHANGE_EVENT);
     },
 
-    getAllAuthors: function() {
+    getAllAuthors: function () {
         return _authors;
     },
 
@@ -64,12 +64,19 @@ Dispatcher.register(function (action) {
             var existingAuthor = _.find(_authors, {id: action.author.id});
             var existingAuthorIndex = _.indexOf(_authors, existingAuthor);
             // Replace existing author in _authors with author received in the action
-            _authors.splice(existingAuthorIndex, 1 , action.author);
+            _authors.splice(existingAuthorIndex, 1, action.author);
+            AuthorStore.emitChange();
+            break;
+        case ActionTypes.DELETE_AUTHOR:
+            // debugger;
+            _.remove(_authors, function (author) {
+                return action.id === author.id;
+            });
             AuthorStore.emitChange();
             break;
 
         default:
-            // no op
+        // no op
 
     }
 });
